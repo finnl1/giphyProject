@@ -36,39 +36,46 @@
       var movies = [];
 
 
-      function renderButtons() {
-
-      
-        $("#movies-view").empty();
-
-     
-        for (var i = 0; i < movies.length; i++) {
-
-          var a = $("<button>");
-        
-          a.addClass("movie");
-      
-          a.attr("data-name", movies[i]);
-        
-          a.text(movies[i]);
-    
-          $("#movies-view").append(a);
-        }
-      }
-
       
       $("#add-movie").on("click", function(event) {
+
+        
       
         event.preventDefault();
 
       
         var movie = $("#movie-input").val().trim();
        
-        movies.push(movie);
+        var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + movie;
+
+       $.ajax({
+        url: queryURL,
+        method: "GET"
+
+       })
+
+
+       .then(function(response) {
+
+// Saving the image_original_url property
+  var imageUrl = response.data.image_original_url;
+
+  // Creating and storing an image tag
+  var Image = $("<img>");
+
+  // Setting the catImage src attribute to imageUrl
+  Image.attr("src", imageUrl);
+  Image.attr("alt", "image");
+
+  // Prepending the catImage to the images div
+  $("#movie-form").prepend(Image);
+});
 
       
-        renderButtons();
       });
+
+    
+
 
      
     </script>
